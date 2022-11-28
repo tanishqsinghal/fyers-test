@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-*owx+7!tn(5=iqlqwp)*p%&n85j#tz1fijc*(qyv+rwgn+(8kc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['affility.store', 'www.affility.store', 'sm.affility.store', 'www.sm.affility.store', '127.0.0.1']
+ALLOWED_HOSTS = ['affility.store', 'www.affility.store', 'sm.affility.store', 'www.sm.affility.store', '127.0.0.1', '.vercel.app', '.now.sh']
 
 
 # Application definition
