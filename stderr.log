@@ -1,0 +1,143 @@
+Invalid HTTP_HOST header: 'sm.affility.store'. You may need to add 'sm.affility.store' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'sm.affility.store'. You may need to add 'sm.affility.store' to ALLOWED_HOSTS.
+Bad Request: /fyers/
+Internal Server Error: /fyers/
+Traceback (most recent call last):
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/affility/sm.affility.store/fyers/mainapp/views.py", line 20, in index
+    return render(request, 'new.html')
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: new.html
+Not Found: /fyers/test/
+Not Found: /fyers/test/
+ERR: logEntryFunc: history : [Errno 2] No such file or directory: '/home/Desktop/apiV2/2022-11-12.txt'
+ERR: logEntryFunc: history : [Errno 2] No such file or directory: '/home/Desktop/apiV2/2022-11-12.txt'
+ERR: logEntryFunc: history : [Errno 2] No such file or directory: '/home/Desktop/apiV2/2022-11-12.txt'
+ERR: logEntryFunc: history : [Errno 2] No such file or directory: '/home/Desktop/apiV2/2022-11-12.txt'
+Internal Server Error: /fyers/user/
+Traceback (most recent call last):
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/affility/sm.affility.store/fyers/mainapp/views.py", line 57, in user_detail
+    response = session.generate_token()
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/fyers_api/accessToken.py", line 52, in generate_token
+    response = service.postCall(Config.generateAccessToken,"",data)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/fyers_api/fyersService.py", line 32, in postCall
+    return response.json()
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/requests/models.py", line 900, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "/opt/alt/python39/lib64/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/opt/alt/python39/lib64/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/opt/alt/python39/lib64/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+Internal Server Error: /fyers/user/
+Traceback (most recent call last):
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/affility/sm.affility.store/fyers/mainapp/views.py", line 57, in user_detail
+    response = session.generate_token()
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/fyers_api/accessToken.py", line 52, in generate_token
+    response = service.postCall(Config.generateAccessToken,"",data)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/fyers_api/fyersService.py", line 32, in postCall
+    return response.json()
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/requests/models.py", line 900, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "/opt/alt/python39/lib64/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/opt/alt/python39/lib64/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/opt/alt/python39/lib64/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+Internal Server Error: /fyers/user/
+Traceback (most recent call last):
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/affility/sm.affility.store/fyers/mainapp/views.py", line 57, in user_detail
+    response = session.generate_token()
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/fyers_api/accessToken.py", line 52, in generate_token
+    response = service.postCall(Config.generateAccessToken,"",data)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/fyers_api/fyersService.py", line 32, in postCall
+    return response.json()
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/requests/models.py", line 900, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "/opt/alt/python39/lib64/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/opt/alt/python39/lib64/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/opt/alt/python39/lib64/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+Internal Server Error: /fyers/user/
+Traceback (most recent call last):
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/affility/sm.affility.store/fyers/mainapp/views.py", line 57, in user_detail
+    response = session.generate_token()
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/fyers_api/accessToken.py", line 52, in generate_token
+    response = service.postCall(Config.generateAccessToken,"",data)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/fyers_api/fyersService.py", line 32, in postCall
+    return response.json()
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/requests/models.py", line 900, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "/opt/alt/python39/lib64/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/opt/alt/python39/lib64/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/opt/alt/python39/lib64/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+ERR: logEntryFunc: history : [Errno 2] No such file or directory: '/home/Desktop/apiV2/2022-11-12.txt'
+Internal Server Error: /fyers/user/
+Traceback (most recent call last):
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/affility/sm.affility.store/fyers/mainapp/views.py", line 57, in user_detail
+    response = session.generate_token()
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/fyers_api/accessToken.py", line 52, in generate_token
+    response = service.postCall(Config.generateAccessToken,"",data)
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/fyers_api/fyersService.py", line 32, in postCall
+    return response.json()
+  File "/home/affility/virtualenv/sm.affility.store/fyers/3.9/lib/python3.9/site-packages/requests/models.py", line 900, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "/opt/alt/python39/lib64/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/opt/alt/python39/lib64/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/opt/alt/python39/lib64/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+Not Found: /user/%7B's':%20'ok',%20'candles':%20[[1622073600,%20413.7,%20429.1,%20412.0,%20425.2,%2073392997]]%7D
+ERR: logEntryFunc: get_profile : [Errno 2] No such file or directory: '/home/Desktop/apiV2/2022-11-12.txt'
+ERR: logEntryFunc: history : [Errno 2] No such file or directory: '/home/Desktop/apiV2/2022-11-12.txt'
+ERR: logEntryFunc: history : [Errno 2] No such file or directory: '/home/Desktop/apiV2/2022-11-12.txt'

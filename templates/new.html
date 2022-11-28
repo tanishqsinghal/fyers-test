@@ -1,0 +1,26 @@
+{% load static %}
+
+<Html>
+<Head>  
+
+</Head>  
+<Body>  
+
+    <h1 id = "test">NEW APP</h1>
+    
+    <button onclick="getData()">GET DATA</button>
+    <button onclick="getTestData()">TEST</button>
+    <input type = "button" onclick = "myfunction()" value = "Display"> 
+    
+    <div id="data">
+        
+    </div>
+    
+    <h1 id = "test2">Hello</h1>
+    <h1 id = "test3">Test</h1>
+
+    <script src="{% static 'app.js' %}"></script>
+    <script src="{% static 'candle_type.js' %}"></script>
+
+</Body>  
+</Html> 

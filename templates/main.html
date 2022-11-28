@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <h1 id = "test">Main</h1>
+
+    <button onclick="getData()">GET DATA</button>
+    <button onclick="getTestData()">TEST</button>
+    <button onclick="executeTrade()">Execute Trade</button>
+    <button onclick="exitTrade()">EXIT Trade</button>
+    <input type = "button" onclick = "myfunction()" value = "Display">
+
+    <div id="data">
+
+    </div>
+
+    <h1 id = "test2">Hello</h1>
+    <h1 id = "test3">Test</h1>
+
+    <div id="data_request_form" align="center">
+        <label for="symbol">Symbol:</label>
+        <input type="text" id="symbol" name="symbol">
+
+        <label for="resolution">Resolution:</label>
+        <select name="resolution" id="resolution">
+          <option value="D">D</option>
+          <option value="1">1</option>
+          <option value="5">5</option>
+          <option value="15">15</option>
+          <option value="30">30</option>
+          <option value="60">60</option>
+        </select>
+
+        <label for="date_format">Date Format:</label>
+        <select name="date_format" id="date_format">
+          <option value="1">1</option>
+          <option value="0">0</option>
+        </select>
+
+        <label for="range_from">From:</label>
+        <input type="date" id="range_from" name="range_from">
+
+        <label for="range_to">To:</label>
+        <input type="date" id="range_to" name="range_to">
+
+        <label for="cont_flag">FnO Flag:</label>
+        <select name="cont_flag" id="cont_flag">
+          <option value="1">1</option>
+          <option value="0">0</option>
+        </select>
+
+        <button onclick="getData()">GET DATA</button>
+    </div>
+
+    <script src="{% static 'app.js' %}"></script>
+    <script src="{% static 'candle_type.js' %}"></script>
+
+</body>
+</html>
