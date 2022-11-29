@@ -239,7 +239,7 @@ def exit_trade(request):
                            PE_Buy_StrikeSymbol[-7:] + " <- S -> " + str(PE_Buy_StrikeSymbol_LTP) + "\n" + \
                            CE_Sell_StrikeSymbol[-7:] + " <- B -> " + str(CE_Sell_StrikeSymbol_LTP) + "\n" + \
                            PE_Sell_StrikeSymbol[-7:] + " <- B -> " + str(PE_Sell_StrikeSymbol_LTP) + "\n" + \
-                            "P&L <--> " + dataToWrite['pnl']
+                            "P&L <--> " + str(dataToWrite['pnl'])
 
 
         combinedDataToWrite = dict(list(file.items()) + list(dataToWrite.items()))
