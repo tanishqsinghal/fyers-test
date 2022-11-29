@@ -2,12 +2,13 @@ import time
 from typing import Dict, Any
 
 import pandas as pd
+# import numpy as np
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.contrib.staticfiles.storage import staticfiles_storage
 from fyers_api import fyersModel, accessToken
-from nsepython import *
-import requests, json, datetime
+# from nsepython import *
+import requests, json, datetime, os
 
 # from django.views.decorators.csrf import csrf_exempt
 session = accessToken.SessionModel(client_id='YUBD35U8OF-100', secret_key='TJFZARII4E',
@@ -34,21 +35,8 @@ def test(request):
     response = "HOLA"
     data = json.loads(request.body)
     tag = data['symbol']
-    # expiry_date_banknifty = expiry_list('BANKNIFTY')[0] + ' 20:00:00'
-    # expiry_date_banknifty = int(time.mktime(time.strptime(expiry_date_banknifty, '%d-%b-%Y %H:%M:%S')))
-    # instruments = pd.read_csv('https://public.fyers.in/sym_details/NSE_FO.csv', header=None)
-    # ism = instruments[instruments[13] == '{}'.format('BANKNIFTY')]
-    # config["expiry_date_banknifty"] = ism[9].tolist()[ism[8].tolist().index(expiry_date_banknifty)][13:-7]
-    data = {"symbol": "NSE:NIFTYBANK-INDEX"}
-    expiry = config["fyers"].depth(data)
-    return JsonResponse({'response': expiry})
+    return JsonResponse({'response': tag})
     # return HttpResponse(response)
-
-def get_expiry(request):
-    data = json.loads(request.body)
-    symbol = data['symbol']
-    expiry_number = data['expiry_number']
-    return JsonResponse({'response': expiry_list(symbol)[expiry_number]})
 
 
 def check_file(request):
@@ -305,9 +293,10 @@ def user_detail(request):
 
     # expiry_date_banknifty = expiry_list('BANKNIFTY')[0] + ' 20:00:00'
     # expiry_date_banknifty = int(time.mktime(time.strptime(expiry_date_banknifty, '%d-%b-%Y %H:%M:%S')))
-    # instruments = pd.read_csv('https://public.fyers.in/sym_details/NSE_FO.csv', header=None)
-    # ism = instruments[instruments[13] == '{}'.format('BANKNIFTY')]
+    instruments = pd.read_csv('https://public.fyers.in/sym_details/NSE_FO.csv', header=None)
+    ism = instruments[instruments[13] == '{}'.format('BANKNIFTY')]
     # config["expiry_date_banknifty"] = ism[9].tolist()[ism[8].tolist().index(expiry_date_banknifty)][13:-7]
+    config["expiry_date_banknifty"] = ism[9].tolist()[0][13:-7]
     # print(config["expiry_date_banknifty"])
     #
     config["fyers"] = fyersModel.FyersModel(client_id='YUBD35U8OF-100', token=access_token, log_path="/home/Desktop/apiV2")

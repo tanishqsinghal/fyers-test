@@ -24,7 +24,6 @@ urlpatterns = [
     path('tt/', views.tt, name='tt'),
     path('getdata/', csrf_exempt(views.get_data), name='getdata'),
     path('test/', csrf_exempt(views.test), name='test'),
-    path('get_expiry/', csrf_exempt(views.get_expiry), name='get_expiry'),
     path('check_file/', csrf_exempt(views.check_file), name='check_file'),
     path('execute_trade/', csrf_exempt(views.execute_trade), name='execute_trade'),
     path('exit_trade/', csrf_exempt(views.exit_trade), name='exit_trade'),
