@@ -204,6 +204,7 @@ def exit_trade(request):
         dataToWrite = {
             'strikesLTPExit': [],
             'spotLTPExit': spotPrice,
+            'pnl': 0,
             'orderExitResponse': []
         }
 
@@ -223,6 +224,11 @@ def exit_trade(request):
         CE_Sell_StrikeSymbol_LTP = config["fyers"].quotes({"symbols": CE_Sell_StrikeSymbol})['d'][0]['v']['lp']
         PE_Sell_StrikeSymbol_LTP = config["fyers"].quotes({"symbols": PE_Sell_StrikeSymbol})['d'][0]['v']['lp']
 
+        dataToWrite['pnl'] = (CE_Buy_StrikeSymbol_LTP - file['strikesLTPEntry'][0]) + \
+                             (PE_Buy_StrikeSymbol_LTP - file['strikesLTPEntry'][1]) + \
+                             (file['strikesLTPEntry'][2] - CE_Sell_StrikeSymbol_LTP) + \
+                             (file['strikesLTPEntry'][3] - PE_Sell_StrikeSymbol_LTP)
+
         dataToWrite['strikesLTPExit'].append(CE_Buy_StrikeSymbol_LTP)
         dataToWrite['strikesLTPExit'].append(PE_Buy_StrikeSymbol_LTP)
         dataToWrite['strikesLTPExit'].append(CE_Sell_StrikeSymbol_LTP)
@@ -232,7 +238,8 @@ def exit_trade(request):
                            CE_Buy_StrikeSymbol[-7:] + " <- S -> " + str(CE_Buy_StrikeSymbol_LTP) + "\n" + \
                            PE_Buy_StrikeSymbol[-7:] + " <- S -> " + str(PE_Buy_StrikeSymbol_LTP) + "\n" + \
                            CE_Sell_StrikeSymbol[-7:] + " <- B -> " + str(CE_Sell_StrikeSymbol_LTP) + "\n" + \
-                           PE_Sell_StrikeSymbol[-7:] + " <- B -> " + str(PE_Sell_StrikeSymbol_LTP)
+                           PE_Sell_StrikeSymbol[-7:] + " <- B -> " + str(PE_Sell_StrikeSymbol_LTP) + "\n" + \
+                            "P&L <--> " + dataToWrite['pnl']
 
 
         combinedDataToWrite = dict(list(file.items()) + list(dataToWrite.items()))
