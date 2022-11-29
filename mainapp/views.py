@@ -11,7 +11,7 @@ import requests, json, datetime
 
 # from django.views.decorators.csrf import csrf_exempt
 session = accessToken.SessionModel(client_id='YUBD35U8OF-100', secret_key='TJFZARII4E',
-                                   redirect_uri='http://127.0.0.1:8000/user/', response_type='code',
+                                   redirect_uri='https://fyers-test.herokuapp.com/user/', response_type='code',
                                    grant_type='authorization_code')
 
 config = {
