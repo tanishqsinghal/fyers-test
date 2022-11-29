@@ -34,11 +34,14 @@ def test(request):
     response = "HOLA"
     data = json.loads(request.body)
     tag = data['symbol']
-    strike = "NSE:BANKNIFTY22D0142800PE"
-    # spotPrice = config["fyers"].quotes({"symbols": strike})['d'][0]['v']['lp']
-    spotPrice = config["fyers"].quotes({"symbols": strike})
-    print(spotPrice)
-    return JsonResponse({'response': spotPrice})
+    expiry_date_banknifty = expiry_list('BANKNIFTY')[0] + ' 20:00:00'
+    expiry_date_banknifty = int(time.mktime(time.strptime(expiry_date_banknifty, '%d-%b-%Y %H:%M:%S')))
+    instruments = pd.read_csv('https://public.fyers.in/sym_details/NSE_FO.csv', header=None)
+    ism = instruments[instruments[13] == '{}'.format('BANKNIFTY')]
+    config["expiry_date_banknifty"] = ism[9].tolist()[ism[8].tolist().index(expiry_date_banknifty)][13:-7]
+
+    config["fyers"] = fyersModel.FyersModel(client_id='YUBD35U8OF-100', token=access_token, log_path="/home/Desktop/apiV2")
+    return JsonResponse({'response': ism})
     # return HttpResponse(response)
 
 def get_expiry(request):
