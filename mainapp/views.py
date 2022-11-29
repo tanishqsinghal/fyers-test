@@ -34,7 +34,11 @@ def test(request):
     response = "HOLA"
     data = json.loads(request.body)
     tag = data['symbol']
-    return JsonResponse({'response': tag})
+    strike = "NSE:BANKNIFTY22D0142800PE"
+    # spotPrice = config["fyers"].quotes({"symbols": strike})['d'][0]['v']['lp']
+    spotPrice = config["fyers"].quotes({"symbols": strike})
+    print(spotPrice)
+    return JsonResponse({'response': spotPrice})
     # return HttpResponse(response)
 
 def get_expiry(request):
@@ -64,18 +68,18 @@ def execute_trade(request):
         }
         return JsonResponse({'response': dataToWrite})
     else:
-        # spotPrice = config["fyers"].quotes({"symbols": "NSE:NIFTYBANK-INDEX"})
-        # expiry_date = config["expiry_date_banknifty"]
-        spotPrice = round(43000 / 100)
-        expiry_date = '22D01'
+        spotPrice = config["fyers"].quotes({"symbols": "NSE:NIFTYBANK-INDEX"})['d'][0]['v']['lp']
+        expiry_date = config["expiry_date_banknifty"]
+        spotPrice_Round = round(spotPrice / 100)
+        # expiry_date = '22D01'
         buyGap = 15
         sellGap = 3
         CE_Buy_StrikeSymbol = 'NSE:BANKNIFTY' + expiry_date + str(
-            (spotPrice + buyGap + sellGap + (5 - ((spotPrice + buyGap + sellGap) % 5))) * 100) + 'CE'
+            (spotPrice_Round + buyGap + sellGap + (5 - ((spotPrice_Round + buyGap + sellGap) % 5))) * 100) + 'CE'
         PE_Buy_StrikeSymbol = 'NSE:BANKNIFTY' + expiry_date + str(
-            (spotPrice - buyGap - sellGap - ((spotPrice - buyGap - sellGap) % 5)) * 100) + 'PE'
-        CE_Sell_StrikeSymbol = 'NSE:BANKNIFTY' + expiry_date + str((spotPrice + sellGap) * 100) + 'CE'
-        PE_Sell_StrikeSymbol = 'NSE:BANKNIFTY' + expiry_date + str((spotPrice - sellGap) * 100) + 'PE'
+            (spotPrice_Round - buyGap - sellGap - ((spotPrice_Round - buyGap - sellGap) % 5)) * 100) + 'PE'
+        CE_Sell_StrikeSymbol = 'NSE:BANKNIFTY' + expiry_date + str((spotPrice_Round + sellGap) * 100) + 'CE'
+        PE_Sell_StrikeSymbol = 'NSE:BANKNIFTY' + expiry_date + str((spotPrice_Round - sellGap) * 100) + 'PE'
 
         orderData_Buy = [{
             "symbol": CE_Buy_StrikeSymbol,
@@ -110,7 +114,7 @@ def execute_trade(request):
             "symbol": CE_Sell_StrikeSymbol,
             "qty": 25,
             "type": 2,
-            "side": 1,
+            "side": -1,
             "productType": "INTRADAY",
             "limitPrice": 0,
             "stopPrice": 0,
@@ -124,7 +128,7 @@ def execute_trade(request):
                 "symbol": PE_Sell_StrikeSymbol,
                 "qty": 25,
                 "type": 2,
-                "side": 1,
+                "side": -1,
                 "productType": "INTRADAY",
                 "limitPrice": 0,
                 "stopPrice": 0,
@@ -142,8 +146,8 @@ def execute_trade(request):
         dataToWrite = {
             'response': 0,
             'strikes': [],
-            'strikesLTPEntry': ['ADD LATER'],
-            'spotLTPEntry': 'ADD LATER',
+            'strikesLTPEntry': [],
+            'spotLTPEntry': spotPrice,
             'orderData': [],
             'orderEntryResponse': []
         }
@@ -152,8 +156,24 @@ def execute_trade(request):
         dataToWrite['strikes'].append(CE_Sell_StrikeSymbol)
         dataToWrite['strikes'].append(PE_Sell_StrikeSymbol)
 
+        CE_Buy_StrikeSymbol_LTP = config["fyers"].quotes({"symbols": CE_Buy_StrikeSymbol})['d'][0]['v']['lp']
+        PE_Buy_StrikeSymbol_LTP = config["fyers"].quotes({"symbols": PE_Buy_StrikeSymbol})['d'][0]['v']['lp']
+        CE_Sell_StrikeSymbol_LTP = config["fyers"].quotes({"symbols": CE_Sell_StrikeSymbol})['d'][0]['v']['lp']
+        PE_Sell_StrikeSymbol_LTP = config["fyers"].quotes({"symbols": PE_Sell_StrikeSymbol})['d'][0]['v']['lp']
+
+        dataToWrite['strikesLTPEntry'].append(CE_Buy_StrikeSymbol_LTP)
+        dataToWrite['strikesLTPEntry'].append(PE_Buy_StrikeSymbol_LTP)
+        dataToWrite['strikesLTPEntry'].append(CE_Sell_StrikeSymbol_LTP)
+        dataToWrite['strikesLTPEntry'].append(PE_Sell_StrikeSymbol_LTP)
+
         dataToWrite['orderData'].append(orderData_Buy)
         dataToWrite['orderData'].append(orderData_Sell)
+
+        telegram_Message =  "Entry\nBANKNIFTY <-> " + str(spotPrice) + "\n" + \
+                            CE_Buy_StrikeSymbol[-7:] + " <- B -> " + str(CE_Buy_StrikeSymbol_LTP) + "\n" + \
+                            PE_Buy_StrikeSymbol[-7:] + " <- B -> " + str(PE_Buy_StrikeSymbol_LTP) + "\n" + \
+                            CE_Sell_StrikeSymbol[-7:] + " <- S -> " + str(CE_Sell_StrikeSymbol_LTP) + "\n" + \
+                            PE_Sell_StrikeSymbol[-7:] + " <- S -> " + str(PE_Sell_StrikeSymbol_LTP)
 
         file = open(file_path, 'w')
         json.dump(dataToWrite, file)
@@ -161,8 +181,8 @@ def execute_trade(request):
         print('FILE CREATED')
         file_json = json.load(open(file_path, 'r'))
         print(file_json)
-        send_telegram_message(dataToWrite['strikes'])
-        return JsonResponse({'response': file_json})
+        send_telegram_message(telegram_Message)
+        return JsonResponse({'response': telegram_Message})
 
     # return JsonResponse({'response': 'DONE'})
 
@@ -171,7 +191,7 @@ def exit_trade(request):
     file_path = staticfiles_storage.path('logs') + '/' + today_date + '.json'
     if os.path.exists(file_path) == True:
         # file = json.load(open(file_path, 'r'))
-        # spotPrice = config["fyers"].quotes({"symbols": "NSE:NIFTYBANK-INDEX"})
+        spotPrice = config["fyers"].quotes({"symbols": "NSE:NIFTYBANK-INDEX"})['d'][0]['v']['lp']
 
         exitOrderData_Sell = [{
                                 "id": "CE SELL ORDER ID"
@@ -191,8 +211,8 @@ def exit_trade(request):
         # config["fyers"].exit_positions(exitOrderData_Buy)
 
         dataToWrite = {
-            'strikesLTPExit': ['ADD LATER'],
-            'spotLTPExit': 'ADD LATER',
+            'strikesLTPExit': [],
+            'spotLTPExit': spotPrice,
             'orderExitResponse': []
         }
 
@@ -201,6 +221,29 @@ def exit_trade(request):
         # file.close()
         # print('FILE CREATED')
         file = json.load(open(file_path, 'r'))
+
+        CE_Buy_StrikeSymbol = file['strikes'][0]
+        PE_Buy_StrikeSymbol = file['strikes'][1]
+        CE_Sell_StrikeSymbol = file['strikes'][2]
+        PE_Sell_StrikeSymbol = file['strikes'][3]
+
+        CE_Buy_StrikeSymbol_LTP = config["fyers"].quotes({"symbols": CE_Buy_StrikeSymbol})['d'][0]['v']['lp']
+        PE_Buy_StrikeSymbol_LTP = config["fyers"].quotes({"symbols": PE_Buy_StrikeSymbol})['d'][0]['v']['lp']
+        CE_Sell_StrikeSymbol_LTP = config["fyers"].quotes({"symbols": CE_Sell_StrikeSymbol})['d'][0]['v']['lp']
+        PE_Sell_StrikeSymbol_LTP = config["fyers"].quotes({"symbols": PE_Sell_StrikeSymbol})['d'][0]['v']['lp']
+
+        dataToWrite['strikesLTPExit'].append(CE_Buy_StrikeSymbol_LTP)
+        dataToWrite['strikesLTPExit'].append(PE_Buy_StrikeSymbol_LTP)
+        dataToWrite['strikesLTPExit'].append(CE_Sell_StrikeSymbol_LTP)
+        dataToWrite['strikesLTPExit'].append(PE_Sell_StrikeSymbol_LTP)
+
+        telegram_Message = "Exit\nBANKNIFTY <-> " + str(spotPrice) + "\n" + \
+                           CE_Buy_StrikeSymbol[-7:] + " <- S -> " + str(CE_Buy_StrikeSymbol_LTP) + "\n" + \
+                           PE_Buy_StrikeSymbol[-7:] + " <- S -> " + str(PE_Buy_StrikeSymbol_LTP) + "\n" + \
+                           CE_Sell_StrikeSymbol[-7:] + " <- B -> " + str(CE_Sell_StrikeSymbol_LTP) + "\n" + \
+                           PE_Sell_StrikeSymbol[-7:] + " <- B -> " + str(PE_Sell_StrikeSymbol_LTP)
+
+
         combinedDataToWrite = dict(list(file.items()) + list(dataToWrite.items()))
         file = open(file_path, 'w')
         json.dump(combinedDataToWrite, file)
@@ -208,8 +251,8 @@ def exit_trade(request):
         print('FILE CREATED')
         file = json.load(open(file_path, 'r'))
         print(file)
-        send_telegram_message(dataToWrite['strikesLTPExit'])
-        return JsonResponse({'response': file})
+        send_telegram_message(telegram_Message)
+        return JsonResponse({'response': telegram_Message})
     else:
         dataToWrite = {
             'response': 1
