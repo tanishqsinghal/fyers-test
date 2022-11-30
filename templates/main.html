@@ -157,7 +157,7 @@ function getData()
 }
 
 var now = new Date();
-var milliSecondsTillExucution = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 46, 0, 0) - now;
+var milliSecondsTillExucution = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 20, 0, 0) - now;
 console.log(milliSecondsTillExucution);
 if (milliSecondsTillExucution < 0)
 {
@@ -169,6 +169,7 @@ if (milliSecondsTillExucution < 0)
 }
 else
 {
+	document.getElementById("test").innerHTML = "TIME LEFT" + milliSecondsTillExucution ;
     setTimeout(executeTrade, milliSecondsTillExucution);
 }
 
