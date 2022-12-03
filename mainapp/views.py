@@ -12,7 +12,7 @@ import requests, json, datetime, os
 
 # from django.views.decorators.csrf import csrf_exempt
 session = accessToken.SessionModel(client_id='YUBD35U8OF-100', secret_key='TJFZARII4E',
-                                   redirect_uri='https://fyers-test.herokuapp.com/user/', response_type='code',
+                                   redirect_uri='http://h2r1m.pythonanywhere.com/user/', response_type='code',
                                    grant_type='authorization_code')
 
 config = {
@@ -151,6 +151,7 @@ def execute_trade(request):
 
         dataToWrite = {
             'response': 0,
+            'orderPlacementStatus': 1,
             'strikes': [],
             'strikesLTPEntry': [],
             'spotLTPEntry': spotPrice,
@@ -228,7 +229,9 @@ def exit_trade(request):
         # json.dump(dataToWrite, file)
         # file.close()
         # print('FILE CREATED')
-        file = json.load(open(file_path, 'r'))
+        # file = json.load(open(file_path, 'r'))
+        response_data = requests.post(config['request_url'])
+        file = json.loads(response_data.text)
 
         CE_Buy_StrikeSymbol = file['strikes'][0]
         PE_Buy_StrikeSymbol = file['strikes'][1]
@@ -259,12 +262,13 @@ def exit_trade(request):
 
 
         combinedDataToWrite = dict(list(file.items()) + list(dataToWrite.items()))
-        file = open(file_path, 'w')
-        json.dump(combinedDataToWrite, file)
-        file.close()
-        print('FILE CREATED')
-        file = json.load(open(file_path, 'r'))
-        print(file)
+        # file = open(file_path, 'w')
+        # json.dump(combinedDataToWrite, file)
+        # file.close()
+        # print('FILE CREATED')
+        # file = json.load(open(file_path, 'r'))
+        # print(file)
+        requests.post(config['request_url'], data=combinedDataToWrite)
         send_telegram_message(telegram_Message)
         return JsonResponse({'response': telegram_Message})
     else:
