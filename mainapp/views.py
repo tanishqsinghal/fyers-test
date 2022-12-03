@@ -18,7 +18,8 @@ session = accessToken.SessionModel(client_id='YUBD35U8OF-100', secret_key='TJFZA
 config = {
     "client_id": "YUBD35U8OF-100",
     "secret_key": "TJFZARII4E",
-    "access_token": ""
+    "access_token": "",
+    "request_url": "https://sm.affility.store"
 }
 
 def index(request):
@@ -33,11 +34,25 @@ def tt(request):
 # @csrf_exempt
 def test(request):
     response = "HOLA"
-    data = json.loads(request.body)
-    tag = data['symbol']
+    received_data = json.loads(request.body)
+    tag = received_data['symbol']
+    print(check_order_placement())
     return JsonResponse({'response': tag})
     # return HttpResponse(response)
 
+def check_order_placement():
+    response = requests.post(config['request_url'])
+    try:
+        json.loads(response.text)
+    except ValueError:
+        return 0
+    else:
+        res = json.loads(response.text)
+        print(res)
+        if res.get("orderPlacementStatus", 0):
+            return 0
+        else:
+            return 1
 
 def check_file(request):
     response = "HOLA"
@@ -52,7 +67,7 @@ def check_file(request):
 def execute_trade(request):
     today_date = datetime.date.today().strftime('%d%m%Y')
     file_path = staticfiles_storage.path('logs') + '/' + today_date + '.json'
-    if os.path.exists(file_path) == True:
+    if check_order_placement == 1:
         # file = json.load(open(file_path, 'r'))
         dataToWrite = {
             'response': 1
@@ -166,12 +181,13 @@ def execute_trade(request):
                             CE_Sell_StrikeSymbol[-7:] + " <- S -> " + str(CE_Sell_StrikeSymbol_LTP) + "\n" + \
                             PE_Sell_StrikeSymbol[-7:] + " <- S -> " + str(PE_Sell_StrikeSymbol_LTP)
 
-        file = open(file_path, 'w')
-        json.dump(dataToWrite, file)
-        file.close()
-        print('FILE CREATED')
-        file_json = json.load(open(file_path, 'r'))
-        print(file_json)
+        # file = open(file_path, 'w')
+        # json.dump(dataToWrite, file)
+        # file.close()
+        # print('FILE CREATED')
+        # file_json = json.load(open(file_path, 'r'))
+        # print(file_json)
+        requests.post(config['request_url'], data=dataToWrite)
         send_telegram_message(telegram_Message)
         return JsonResponse({'response': telegram_Message})
 
@@ -180,7 +196,7 @@ def execute_trade(request):
 def exit_trade(request):
     today_date = datetime.date.today().strftime('%d%m%Y')
     file_path = staticfiles_storage.path('logs') + '/' + today_date + '.json'
-    if os.path.exists(file_path) == True:
+    if check_order_placement == 1:
         # file = json.load(open(file_path, 'r'))
         spotPrice = config["fyers"].quotes({"symbols": "NSE:NIFTYBANK-INDEX"})['d'][0]['v']['lp']
 
